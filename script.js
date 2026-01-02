@@ -1,56 +1,74 @@
-// MVP Calculate share from static bill
-document.getElementById("calculate-btn").addEventListener("click", function() {
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = ""; // clear previous results
+const tableBody = document.querySelector("#bill-table tbody");
+const resultsDiv = document.getElementById("results");
 
-  const table = document.getElementById("bill-table").getElementsByTagName("tbody")[0];
-  const totals = {};
+// ---------- ADD ROW ----------
+function addRow(item, price, participants) {
+  const row = tableBody.insertRow();
 
-  // Loop through each row of the table
-  for (let row of table.rows) {
-    const item = row.cells[0].innerText;
-    const price = parseFloat(row.cells[1].innerText);
-    const participants = row.cells[2].innerText.split(",").map(p => p.trim());
+  const itemCell = row.insertCell(0);
+  const priceCell = row.insertCell(1);
+  const participantsCell = row.insertCell(2);
+  const actionsCell = row.insertCell(3);
 
-    const splitAmount = price / participants.length;
+  itemCell.innerText = item;
+  priceCell.innerText = price.toFixed(2);
+  participantsCell.innerText = participants;
 
-    // Add splitAmount to each participant
-    for (let p of participants) {
-      if (!totals[p]) totals[p] = 0;
-      totals[p] += splitAmount;
+  const editBtn = document.createElement("button");
+  editBtn.innerText = "Edit";
+
+  editBtn.onclick = () => {
+    const newItem = prompt("Item name:", itemCell.innerText);
+    const newPrice = prompt("Price:", priceCell.innerText);
+    const newParticipants = prompt("Participants:", participantsCell.innerText);
+
+    if (newItem && !isNaN(newPrice) && newParticipants) {
+      itemCell.innerText = newItem;
+      priceCell.innerText = parseFloat(newPrice).toFixed(2);
+      participantsCell.innerText = newParticipants;
     }
-  }
+  };
 
-  // Display results
-  for (let [participant, amount] of Object.entries(totals)) {
-    resultsDiv.innerHTML += `<p>${participant}: $${amount.toFixed(2)}</p>`;
-  }
-});
+  actionsCell.appendChild(editBtn);
+}
 
-// Add item button functionality
-document.getElementById("add-item-btn").addEventListener("click", function() {
-  const itemName = document.getElementById("item-name").value.trim();
-  const itemPrice = parseFloat(document.getElementById("item-price").value);
+// ---------- ADD ITEM BUTTON ----------
+document.getElementById("add-item-btn").onclick = () => {
+  const item = document.getElementById("item-name").value.trim();
+  const price = parseFloat(document.getElementById("item-price").value);
   const participants = document.getElementById("item-participants").value.trim();
 
-  if (!itemName || isNaN(itemPrice) || !participants) {
-    alert("Please fill in all fields");
+  if (!item || isNaN(price) || !participants) {
+    alert("Please fill all fields");
     return;
   }
 
-  const table = document.getElementById("bill-table").getElementsByTagName("tbody")[0];
-  const newRow = table.insertRow();
+  addRow(item, price, participants);
 
-  const cell1 = newRow.insertCell(0);
-  const cell2 = newRow.insertCell(1);
-  const cell3 = newRow.insertCell(2);
-
-  cell1.innerText = itemName;
-  cell2.innerText = itemPrice.toFixed(2);
-  cell3.innerText = participants;
-
-  // Clear input fields
   document.getElementById("item-name").value = "";
   document.getElementById("item-price").value = "";
   document.getElementById("item-participants").value = "";
-});
+};
+
+// ---------- CALCULATE TOTALS ----------
+document.getElementById("calculate-btn").onclick = () => {
+  resultsDiv.innerHTML = "";
+  const totals = {};
+
+  for (const row of tableBody.rows) {
+    const price = parseFloat(row.cells[1].innerText);
+    const participants = row.cells[2].innerText
+      .split(",")
+      .map(p => p.trim());
+
+    const split = price / participants.length;
+
+    participants.forEach(p => {
+      totals[p] = (totals[p] || 0) + split;
+    });
+  }
+
+  for (const person in totals) {
+    resultsDiv.innerHTML += `<p>${person}: $${totals[person].toFixed(2)}</p>`;
+  }
+};

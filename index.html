@@ -1,49 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Balis Bill Splitter MVP</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Ball-e's Bill Splitter</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Balis Bill Splitter</h1>
-  <h2>Add Bill Item</h2>
-<label>Item: <input type="text" id="item-name"></label>
-<label>Price: <input type="number" id="item-price" step="0.01"></label>
-<label>Participants (comma-separated): <input type="text" id="item-participants"></label>
-<button id="add-item-btn">Add Item</button>
 
-  <table id="bill-table" border="1">
+  <h1>Ball-e's Bill Splitter</h1>
+
+  <h2>Add Bill Item</h2>
+  <input type="text" id="item-name" placeholder="Item name" />
+  <input type="number" id="item-price" placeholder="Price" step="0.01" />
+  <input type="text" id="item-participants" placeholder="Participants (comma separated)" />
+  <button id="add-item-btn">Add Item</button>
+
+  <h2>Bill</h2>
+  <table border="1" id="bill-table">
     <thead>
       <tr>
         <th>Item</th>
         <th>Price</th>
-        <th>Participants (comma-separated)</th>
+        <th>Participants</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Pizza</td>
-        <td>20</td>
-        <td>Alice,Bob</td>
-      </tr>
-      <tr>
-        <td>Pasta</td>
-        <td>15</td>
-        <td>Bob,Charlie</td>
-      </tr>
-      <tr>
-        <td>Soda</td>
-        <td>5</td>
-        <td>Alice,Charlie</td>
-      </tr>
+      <!-- Rows added dynamically -->
     </tbody>
   </table>
 
+  <br />
   <button id="calculate-btn">Calculate Totals</button>
 
-  <h2>Results:</h2>
+  <h2>Results</h2>
   <div id="results"></div>
 
   <script src="script.js"></script>

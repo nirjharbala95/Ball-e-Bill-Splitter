@@ -1,3 +1,4 @@
+// MVP Calculate share from static bill
 document.getElementById("calculate-btn").addEventListener("click", function() {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = ""; // clear previous results
@@ -24,4 +25,32 @@ document.getElementById("calculate-btn").addEventListener("click", function() {
   for (let [participant, amount] of Object.entries(totals)) {
     resultsDiv.innerHTML += `<p>${participant}: $${amount.toFixed(2)}</p>`;
   }
+});
+
+// Add item button functionality
+document.getElementById("add-item-btn").addEventListener("click", function() {
+  const itemName = document.getElementById("item-name").value.trim();
+  const itemPrice = parseFloat(document.getElementById("item-price").value);
+  const participants = document.getElementById("item-participants").value.trim();
+
+  if (!itemName || isNaN(itemPrice) || !participants) {
+    alert("Please fill in all fields");
+    return;
+  }
+
+  const table = document.getElementById("bill-table").getElementsByTagName("tbody")[0];
+  const newRow = table.insertRow();
+
+  const cell1 = newRow.insertCell(0);
+  const cell2 = newRow.insertCell(1);
+  const cell3 = newRow.insertCell(2);
+
+  cell1.innerText = itemName;
+  cell2.innerText = itemPrice.toFixed(2);
+  cell3.innerText = participants;
+
+  // Clear input fields
+  document.getElementById("item-name").value = "";
+  document.getElementById("item-price").value = "";
+  document.getElementById("item-participants").value = "";
 });

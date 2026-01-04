@@ -6,35 +6,40 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <h1>Ball-e's Bill Splitter</h1>
 
-  <h2>Add Bill Item</h2>
-  <input type="text" id="item-name" placeholder="Item name" />
-  <input type="number" id="item-price" placeholder="Price" step="0.01" />
-  <input type="text" id="item-participants" placeholder="Participants (comma separated)" />
-  <button id="add-item-btn">Add Item</button>
+  <section class="input-section">
+    <h2>Add Item</h2>
+    <input type="text" id="itemName" placeholder="Item name" />
+    <input type="number" id="itemPrice" placeholder="Price" />
+    <input type="text" id="itemParticipants" placeholder="Participants (comma-separated)" />
+    <button onclick="addItem()">Add Item</button>
+  </section>
 
-  <h2>Bill</h2>
-  <table border="1" id="bill-table">
-    <thead>
-      <tr>
-        <th>Item</th>
-        <th>Price</th>
-        <th>Participants</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Rows added dynamically -->
-    </tbody>
-  </table>
+  <section class="table-section">
+    <h2>Bill Items</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Price</th>
+          <th>Participants</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="itemsTableBody"></tbody>
+    </table>
+  </section>
 
-  <br />
-  <button id="calculate-btn">Calculate Totals</button>
+  <section class="results-section">
+    <h2>Results</h2>
+    <div id="results"></div>
 
-  <h2>Results</h2>
-  <div id="results"></div>
+    <div class="total-box">
+      <strong>Total Bill Amount:</strong>
+      <span id="totalAmount">$0.00</span>
+    </div>
+  </section>
 
   <script src="script.js"></script>
 </body>

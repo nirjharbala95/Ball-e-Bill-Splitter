@@ -14,6 +14,9 @@
     <input type="number" id="itemPrice" placeholder="Price" />
     <input type="text" id="itemParticipants" placeholder="Participants (comma-separated)" />
     <button onclick="addItem()">Add Item</button>
+
+    <h3>Add Tax</h3>
+    <input type="number" id="taxAmountInput" placeholder="Tax amount for entire bill" />
   </section>
 
   <section class="table-section">
@@ -29,6 +32,11 @@
       </thead>
       <tbody id="itemsTableBody"></tbody>
     </table>
+  </section>
+
+  <!-- ✅ NEW: Calculate button -->
+  <section class="calculate-section">
+    <button onclick="render()">Calculate</button>
   </section>
 
   <section class="results-section">

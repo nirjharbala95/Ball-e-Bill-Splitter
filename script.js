@@ -1,4 +1,5 @@
 let items = [];
+let taxAmount = 0;
 
 function addItem() {
   const name = document.getElementById("itemName").value.trim();
@@ -10,25 +11,31 @@ function addItem() {
     .filter(p => p);
 
   if (!name || isNaN(price) || participants.length === 0) {
-    alert("Please fill all fields correctly.");
+    alert("Please fill all item fields correctly.");
     return;
   }
 
   items.push({ name, price, participants });
-  clearInputs();
+  clearItemInputs();
   render();
 }
 
-function clearInputs() {
+function clearItemInputs() {
   document.getElementById("itemName").value = "";
   document.getElementById("itemPrice").value = "";
   document.getElementById("itemParticipants").value = "";
 }
 
 function render() {
+  readTaxInput();
   renderTable();
   renderResults();
   renderTotal();
+}
+
+function readTaxInput() {
+  const taxInput = document.getElementById("taxAmountInput").value;
+  taxAmount = taxInput ? parseFloat(taxInput) : 0;
 }
 
 function renderTable() {
@@ -37,7 +44,6 @@ function renderTable() {
 
   items.forEach((item, index) => {
     const row = document.createElement("tr");
-
     row.innerHTML = `
       <td>${item.name}</td>
       <td>$${item.price.toFixed(2)}</td>
@@ -47,7 +53,6 @@ function renderTable() {
         <button onclick="deleteItem(${index})">Delete</button>
       </td>
     `;
-
     tbody.appendChild(row);
   });
 }
@@ -80,24 +85,38 @@ function deleteItem(index) {
 
 function renderResults() {
   const resultsDiv = document.getElementById("results");
-  const totals = {};
+  resultsDiv.innerHTML = "";
+
+  const subtotals = {};
+  let totalBeforeTax = 0;
 
   items.forEach(item => {
     const split = item.price / item.participants.length;
     item.participants.forEach(person => {
-      totals[person] = (totals[person] || 0) + split;
+      subtotals[person] = (subtotals[person] || 0) + split;
+      totalBeforeTax += split;
     });
   });
 
-  resultsDiv.innerHTML = "";
-  Object.keys(totals).forEach(person => {
+  Object.keys(subtotals).forEach(person => {
+    const share = subtotals[person];
+    const taxShare =
+      totalBeforeTax > 0 ? taxAmount * (share / totalBeforeTax) : 0;
+    const totalOwed = share + taxShare;
+
     const p = document.createElement("p");
-    p.textContent = `${person} owes $${totals[person].toFixed(2)}`;
+    p.textContent =
+      `${person}: ` +
+      `Items $${share.toFixed(2)} + ` +
+      `Tax $${taxShare.toFixed(2)} = ` +
+      `$${totalOwed.toFixed(2)}`;
+
     resultsDiv.appendChild(p);
   });
 }
 
 function renderTotal() {
-  const total = items.reduce((sum, item) => sum + item.price, 0);
-  document.getElementById("totalAmount").textContent = `$${total.toFixed(2)}`;
+  const itemsTotal = items.reduce((sum, item) => sum + item.price, 0);
+  document.getElementById("totalAmount").textContent =
+    `$${(itemsTotal + taxAmount).toFixed(2)}`;
 }

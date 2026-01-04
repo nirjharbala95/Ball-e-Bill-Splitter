@@ -16,6 +16,11 @@ h2 {
   margin-bottom: 10px;
 }
 
+h3 {
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
 /* ---- Input Section ---- */
 input {
   padding: 8px;
@@ -36,6 +41,11 @@ button {
 
 button:hover {
   background: #1e40af;
+}
+
+/* ---- Calculate Section ---- */
+.calculate-section {
+  margin: 20px 0;
 }
 
 /* ---- Table ---- */
@@ -67,4 +77,12 @@ tr:hover {
   padding: 10px;
   border-radius: 6px;
   margin: 6px 0;
+}
+
+.total-box {
+  margin-top: 15px;
+  font-size: 1.2em;
+  padding: 10px;
+  background: #eef3ff;
+  border-radius: 6px;
 }
